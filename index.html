@@ -12,6 +12,7 @@
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.css"/>
 
 	<meta charset="utf-8">
+	<meta http-equiv="Access-Control-Allow-Origin" content="https://admin.conekta.com/">
 	<title>Inicio</title>
 </head>
 <body>
@@ -102,6 +103,7 @@
 				$.ajax({
 				  type: "DELETE",
 				  crossDomain: true,
+				  'dataType': "jsonp",
 				  beforeSend: function(request) {
 				    request.setRequestHeader("Authorization", "Basic " + window.btoa($("#inlineFormInputName").val()));
 				    request.setRequestHeader("Content-Type", "application/json");
@@ -185,11 +187,12 @@
 		$.ajax({
 		  type: "GET",
 		  crossDomain: true,
+		  'dataType': "jsonp",
 		  beforeSend: function(request) {
 		    request.setRequestHeader("Authorization", "Basic " + window.btoa($("#inlineFormInputName").val()));
 		    request.setRequestHeader("Content-Type", "application/json");
 		    request.setRequestHeader("Accept", "application/vnd.conekta-v2.0.0+json");
-		    request.setRequestHeader("Access-Control-Allow-Origin", "https://admin.conekta.com");
+		    request.setRequestHeader("Access-Control-Allow-Origin", "*");
 		  },
 		  url: endpoint,
 		  processData: false,
@@ -236,6 +239,7 @@
 		$.ajax({
 		  type: "GET",
 		  crossDomain: true,
+		  'dataType': "jsonp",
 		  beforeSend: function(request) {
 		    request.setRequestHeader("Authorization", "Basic " + window.btoa($("#inlineFormInputName").val()));
 		    request.setRequestHeader("Content-Type", "application/json");
