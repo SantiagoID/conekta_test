@@ -12,7 +12,6 @@
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.css"/>
 
 	<meta charset="utf-8">
-	<meta http-equiv="Access-Control-Allow-Origin" content="https://admin.conekta.com/">
 	<title>Inicio</title>
 </head>
 <body>
@@ -68,6 +67,7 @@
 <script type="text/javascript">
 	
 	var dataList = [];
+	var urlWS = "https://localhost:44326/Home.asmx/";
 
 	$(document).ready(function() {
 	    dataList = [];
@@ -103,12 +103,10 @@
 				$.ajax({
 				  type: "DELETE",
 				  crossDomain: true,
-				  'dataType': "jsonp",
 				  beforeSend: function(request) {
 				    request.setRequestHeader("Authorization", "Basic " + window.btoa($("#inlineFormInputName").val()));
 				    request.setRequestHeader("Content-Type", "application/json");
 				    request.setRequestHeader("Accept", "application/vnd.conekta-v2.0.0+json");
-				    request.setRequestHeader("Access-Control-Allow-Origin", "https://admin.conekta.com");
 				  },
 				  url: endpoint,
 				  processData: false,
@@ -135,12 +133,7 @@
 	 * @param  {[type]} cursor [description]
 	 * @return {[type]}        [description]
 	 */
-	function getData(cursor){
-
-		if(cursor == undefined){
-			dataList = [];
-			$("#contentActions").css("display", "none");
-		}
+	function getData(){
 
 		var table = $('#tablaContenido').DataTable( {
 			"sDom": "<'table-responsive't><'row'<p>>",
@@ -176,39 +169,20 @@
 		$("#tablaContenido_length").remove();
 		table.clear().draw();
 
-		var uri = "https://api.conekta.io/";
-
-		if(cursor != undefined){
-			uri = cursor;
-		}
-
-		var endpoint = uri + "customers/";
+		var endpoint = urlWS + "GetData?privateKey=" + window.btoa($("#inlineFormInputName").val());
 
 		$.ajax({
-		  type: "GET",
+		  type: "POST",
 		  crossDomain: true,
-		  'dataType': "jsonp",
 		  beforeSend: function(request) {
-		    request.setRequestHeader("Authorization", "Basic " + window.btoa($("#inlineFormInputName").val()));
 		    request.setRequestHeader("Content-Type", "application/json");
 		    request.setRequestHeader("Accept", "application/vnd.conekta-v2.0.0+json");
-		    request.setRequestHeader("Access-Control-Allow-Origin", "*");
+		    request.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
 		  },
 		  url: endpoint,
 		  processData: false,
 		  success: function(data) {
-		    if(data != null){
-
-				for(var i=1; i<data.data.length; i++){
-					dataList.push(data.data[i]);
-				}
-
-		    	if(data.has_more){
-		    		getData(data.next_page_url);
-		    	} else {
-		    		render();
-		    	}
-		    }
+		    console.log(data);
 		  }
 		});
 
@@ -239,12 +213,10 @@
 		$.ajax({
 		  type: "GET",
 		  crossDomain: true,
-		  'dataType': "jsonp",
 		  beforeSend: function(request) {
 		    request.setRequestHeader("Authorization", "Basic " + window.btoa($("#inlineFormInputName").val()));
 		    request.setRequestHeader("Content-Type", "application/json");
 		    request.setRequestHeader("Accept", "application/vnd.conekta-v2.0.0+json");
-		    request.setRequestHeader("Access-Control-Allow-Origin", "https://admin.conekta.com");
 		  },
 		  url: endpoint,
 		  processData: false,
